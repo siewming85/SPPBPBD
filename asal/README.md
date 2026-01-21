@@ -1,7 +1,3 @@
-Berikut adalah draf kemaskini untuk fail `README.md` anda. Saya telah menggabungkan langkah-langkah baharu tersebut ke dalam format yang seragam, kemas, dan mudah dibaca menggunakan gaya Markdown yang sama seperti bahagian atas.
-
-Saya telah meletakkan langkah-langkah baharu ini di bawah tajuk besar **"Bahagian B: Proses Pembersihan Data (Data Cleaning)"** supaya aliran kerja lebih teratur.
-
 ***
 
 # Kaedah Asal dalam Menganalisis Data Pentaksiran Bilik Darjah (PBD) Daerah
