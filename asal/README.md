@@ -1,4 +1,3 @@
-Berikut adalah draf fail `README.md` yang lengkap berdasarkan arahan dan pautan gambar yang anda berikan.
 
 ***
 
