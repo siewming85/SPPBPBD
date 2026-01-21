@@ -383,3 +383,6 @@ Bahagian ini akan menggunakan pengaturcaraan Google Apps Script untuk menjana an
     Sistem akan menjana *Sheet* baharu secara automatik yang mengandungi analisis dan rumusan PBD mengikut subjek dan sekolah.
 
     ![Run Script](https://github.com/siewming85/SPPBPBD/blob/main/Screenshot_2026-01-21_15_26_04.png?raw=true)
+
+    ![Rumusan Semua Kelas Semua MP Semua Tingkatan](https://github.com/siewming85/SPPBPBD/blob/main/Screenshot_2026-01-21_15_44_05.png?raw=true)
+    ![ANALISIS IKUT MP](https://github.com/siewming85/SPPBPBD/blob/main/Screenshot_2026-01-21_15_44_23.png?raw=true)
