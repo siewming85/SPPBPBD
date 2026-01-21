@@ -248,7 +248,7 @@ Bahagian ini akan menggunakan pengaturcaraan Google Apps Script untuk menjana an
 
     function getUniqueSchoolNames() {
       var ss = SpreadsheetApp.getActiveSpreadsheet();
-      var sheet = ss.getSheetByName("Pertengahan");
+      var sheet = ss.getSheetByName("PBD AKHIR"); //setting here
       var dataRange = sheet.getRange("C2:C");
       var values = dataRange.getValues();
       
