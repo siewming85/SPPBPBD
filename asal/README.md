@@ -17,6 +17,7 @@ Ikuti langkah berikut untuk masuk ke menu utama:
 1.  **Langkah Pertama:** Log masuk ke dalam sistem **idMe**.
 2.  **Langkah Kedua:** Pada papan pemuka utama, klik pada ikon **Aplikasi**.
 3.  **Langkah Ketiga:** Pilih **Pengurusan Pentaksiran**.
+![Menu Analisis PBD](https://raw.githubusercontent.com/siewming85/SPPBPBD/refs/heads/main/Screenshot_2026-01-21_14_24_54.png)
 
 ---
 
@@ -24,8 +25,6 @@ Ikuti langkah berikut untuk masuk ke menu utama:
 Setelah berada di dalam Modul Pengurusan Pentaksiran:
 
 4.  **Langkah Keempat:** Pada menu navigasi, tekan **Analisis** > **Pentaksiran Bilik Darjah** > **Analisis Mengikut JPN/PPD**.
-
-![Menu Analisis PBD](https://raw.githubusercontent.com/siewming85/SPPBPBD/refs/heads/main/Screenshot_2026-01-21_14_24_54.png)
 
 ---
 
