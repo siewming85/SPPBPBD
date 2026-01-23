@@ -125,3 +125,108 @@ Akhir sekali, susun semula lajur (*Cut & Insert Cut Cells*) supaya mengikut urut
 5.  **BIL MURID DIDAFTAR** (Ambil dari lajur hujung sekali - 'Jumlah')
 6.  **TP1 hingga TP6** (Lajur markah yang tinggal)
 7.  **TD** (Lajur Tidak Diduduki)
+
+
+***
+
+## Bahagian C: Penghasilan Analisis Mengikut Mata Pelajaran (Satu Tab Satu Subjek)
+
+Langkah ini bertujuan untuk memecahkan data induk kepada helaian (*sheet*) berasingan mengikut subjek (Contoh: BM, BI, MM) dan mengira peratusan TP serta peratusan intervensi (TP1+TP2).
+
+### 1. Persediaan Data Induk (Master Data)
+Pastikan anda berada di helaian data yang telah dibersihkan dalam **Bahagian B**. Kita akan menggunakan data ini sebagai sumber utama.
+
+1.  Klik pada tajuk lajur **MATA PELAJARAN** (biasanya Column C).
+2.  Pergi ke tab **Data** > klik butang **Filter**.
+
+---
+
+### 2. Proses Pengasingan Mata Pelajaran (Contoh: Bahasa Melayu)
+Ulangi proses ini untuk setiap mata pelajaran (BM, BI, MM, Sains, dll). Kita mulakan dengan **BM**.
+
+1.  Pada *filter* **MATA PELAJARAN**, tandakan (**check**) hanya `BM`. Klik **OK**.
+2.  Pilih semua data yang terpapar (Tekan `Ctrl + A`).
+3.  **Copy** (`Ctrl + C`).
+4.  Buka *Sheet* baru (klik tanda `+` di bawah). Namakan sheet ini **"ANALISIS BM"**.
+5.  **Paste** (`Ctrl + V`) di dalam sheet baru tersebut.
+6.  Di sheet baru ini, anda boleh **Delete** lajur *FASA*, *MATA PELAJARAN*, dan *TD* kerana kita tidak memerlukannya dalam format akhir sasaran.
+
+---
+
+### 3. Menambah Lajur Peratusan & Formula
+Sekarang kita akan wujudkan lajur pengiraan peratusan di sebelah kanan lajur TP6.
+
+**Susunan Lajur Anda Sepatutnya Begini Sekarang:**
+*   A: SEKOLAH
+*   B: TAHUN
+*   C: BIL MURID
+*   D: TP1 | E: TP2 | F: TP3 | G: TP4 | H: TP5 | I: TP6
+
+**Langkah Menambah Formula:**
+
+1.  Di sel **J1**, taip tajuk `% TP1`.
+2.  Di sel **J2**, masukkan formula:
+    ```excel
+    =IF(C2=0, 0, D2/C2)
+    ```
+3.  Salin formula ini ke kanan sehingga lajur **O** (`% TP6`).
+    *   *Nota: Excel akan automatik mengira TP2/Bil Murid, TP3/Bil Murid dan seterusnya.*
+4.  Di sel **P1**, taip tajuk `% (TP1+TP2)`.
+5.  Di sel **P2**, masukkan formula untuk murid yang belum menguasai tahap minimum:
+    ```excel
+    =IF(C2=0, 0, (D2+E2)/C2)
+    ```
+6.  Pilih sel **J2 hingga P2**, kemudian **Double-click** bucu bawah kanan untuk menyalin formula ke semua baris di bawah.
+
+---
+
+### 4. Format Peratusan (%)
+Supaya data mudah dibaca (contoh: 0.5 jadi 50%):
+
+1.  Pilih lajur **J** hingga **P**.
+2.  Klik kanan > **Format Cells**.
+3.  Pilih **Percentage**. Tetapkan *Decimal places* kepada **2**.
+4.  Klik **OK**.
+
+---
+
+### 5. Susunan (Sorting) Mengikut Keutamaan Intervensi
+Untuk mendapatkan paparan seperti contoh sasaran (sekolah yang paling ramai TP1+TP2 berada di atas):
+
+1.  Klik pada mana-mana sel dalam data.
+2.  Pergi ke tab **Data** > **Sort**.
+3.  Tetapkan aturan berikut:
+    *   **Sort by:** `% (TP1+TP2)` (Lajur P)
+    *   **Sort On:** Cell Values
+    *   **Order:** Largest to Smallest (Z to A)
+4.  Klik **OK**.
+
+> **Hasil:** Sekolah dengan peratus murid TP1 & TP2 tertinggi akan berada di baris paling atas untuk memudahkan PPD mengenal pasti sekolah fokus.
+
+---
+
+### 6. Kemasan Akhir (Header)
+Tukar tajuk lajur supaya sama dengan format sasaran anda:
+
+*   Tukar "Tahun" kepada **TAHUN/TINGKATAN**.
+*   Tukar "Bil Murid Didaftar" kepada **BIL MURID**.
+*   Tukar "TP1" kepada **BIL TP1** (dan seterusnya untuk TP2-TP6).
+
+### 7. Ulang untuk Subjek Lain
+Untuk subjek seterusnya (contoh: BI):
+1.  Kembali ke **Sheet Data Induk**.
+2.  Tukar Filter Mata Pelajaran kepada **BI**.
+3.  Ulang langkah 2 hingga 6 di atas dalam sheet baru bernama **"ANALISIS BI"**.
+
+---
+
+## Ringkasan Formula Penting
+
+| Data Sasaran | Formula (Andaikan C=Bil Murid, D=TP1, E=TP2) |
+| :--- | :--- |
+| **% TP1** | `=D2/C2` |
+| **% TP2** | `=E2/C2` |
+| ... | ... |
+| **% (TP1+TP2)** | `=(D2+E2)/C2` |
+
+*(Pastikan format cell ditukar kepada Percentage)*
