@@ -126,6 +126,143 @@ Setelah fail HTML berjaya dimuat turun ke dalam komputer anda:
 
     > **Contoh:** Jika ID folder Google Drive anda adalah `1AbCdEfGhIjK`, maka URL yang perlu ditaip adalah: `s1.ppdjulau.com/getallData/1AbCdEfGhIjK`
 
+### Pilihan B: Kaedah Lokal (Offline - Python)
+*Sesuai untuk pemprosesan data yang lebih selamat, pantas, dan tanpa internet.*
+
+#### 1. Persiapan Persekitaran (Setup)
+Pastikan komputer anda mempunyai **Python** dan *libraries* berikut dipasang:
+
+```bash
+pip install pandas beautifulsoup4 openpyxl
+```
+
+#### 2. Penyediaan Fail
+1.  Letakkan semua fail HTML yang dimuat turun ke dalam satu folder (Contoh: `C:\DataPBD\RawHtml`).
+2.  Salin kod Python di bawah dan simpan sebagai fail `proses_data.py`.
+3.  **PENTING:** Edit baris `INPUT_FOLDER_PATH` dalam kod di bawah mengikut lokasi folder anda.
+
+#### 3. Kod Python Pemprosesan
+
+```python
+import os
+import glob
+from bs4 import BeautifulSoup
+import pandas as pd
+
+# ================= KONFIGURASI PENGGUNA =================
+# Gantikan path ini dengan lokasi folder fail HTML anda
+INPUT_FOLDER_PATH = r"C:\DataPBD\RawHtml" 
+
+# Nama fail output yang akan dijana
+OUTPUT_FILE_NAME = "Analisis_PBD_Master.xlsx"
+# ========================================================
+
+def extract_table_data(html_content):
+    soup = BeautifulSoup(html_content, 'html.parser')
+    
+    # Cari jadual yang betul (biasanya jadual kedua mengandungi data murid)
+    tables = soup.find_all('table')
+    if not tables:
+        return {'header': [], 'data': []}
+        
+    table = tables[1] if len(tables) >= 2 else tables[0]
+
+    # Fungsi bantuan untuk mencari metadata (Sekolah, Tahun, dll)
+    def get_meta_value(label):
+        tag = soup.find(lambda tag: tag.name == "td" and label in tag.text)
+        if tag:
+            sibling = tag.find_next_sibling('td', class_='text-left')
+            if sibling:
+                return sibling.text.strip()
+        return ""
+
+    meta_info = {
+        'Sekolah': get_meta_value('Sekolah'),
+        'Tahun': get_meta_value('Tahun/Tingkatan'),
+        'Aktiviti': get_meta_value('Aktiviti'),
+        'Kelas': get_meta_value('Kelas')
+    }
+
+    # Proses Header Jadual
+    headers = []
+    for th in table.find_all('th'):
+        text = th.text.strip()
+        if th.has_attr('colspan'):
+            headers.extend([f"{text} Mark", f"{text} Gred"])
+        else:
+            headers.append(text)
+
+    # Proses Data Baris
+    data = []
+    rows = table.find_all('tr')
+    
+    for row in rows:
+        cells = row.find_all('td')
+        if cells:
+            row_data = meta_info.copy() # Masukkan metadata dahulu
+            
+            # Map data sel ke header
+            limit = min(len(cells), len(headers))
+            for i in range(limit):
+                row_data[headers[i]] = cells[i].text.strip()
+                
+            data.append(row_data)
+
+    return data
+
+def main():
+    print(f"📂 Sedang membaca fail dari: {INPUT_FOLDER_PATH}")
+    html_files = glob.glob(os.path.join(INPUT_FOLDER_PATH, "*.html"))
+    
+    if not html_files:
+        print("❌ Tiada fail HTML ditemui. Sila semak 'INPUT_FOLDER_PATH'.")
+        return
+
+    print(f"📄 Menjumpai {len(html_files)} fail. Memulakan pemprosesan...")
+
+    all_data = []
+    for file_path in html_files:
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                extracted = extract_table_data(f.read())
+                all_data.extend(extracted)
+        except Exception as e:
+            print(f"⚠️ Ralat pada fail {os.path.basename(file_path)}: {e}")
+
+    if all_data:
+        print("💾 Sedang menjana fail Excel...")
+        df = pd.DataFrame(all_data)
+        
+        # Susun semula kolum supaya metadata berada di hadapan
+        cols = list(df.columns)
+        priority_cols = ['Sekolah', 'Tahun', 'Kelas', 'Aktiviti', 'Bil.', 'Nama Murid', 'No. KP']
+        
+        # Logik penyusunan kolum
+        ordered_cols = [c for c in priority_cols if c in cols] + [c for c in cols if c not in priority_cols]
+        df = df[ordered_cols]
+
+        df.to_excel(OUTPUT_FILE_NAME, index=False)
+        print(f"✅ BERJAYA! Data disimpan sebagai: {OUTPUT_FILE_NAME}")
+    else:
+        print("⚠️ Tiada data berjaya diekstrak.")
+
+if __name__ == "__main__":
+    main()
+```
+
+#### 4. Menjalankan Skrip
+Buka terminal/command prompt dan jalankan arahan:
+```bash
+python proses_data.py
+```
+Fail Excel `Analisis_PBD_Master.xlsx` akan terhasil di folder yang sama dengan skrip.
+
+---
+
+### 📝 Nota Tambahan
+*   **Privasi Data:** Pastikan data yang dimuat turun dikendalikan mengikut etika kerahsiaan data kerajaan.
+*   **Struktur HTML:** Jika KPM mengubah struktur HTML laporan pada masa hadapan, skrip Python/JS mungkin perlu dikemaskini.
+
 ---
 Berikut adalah sambungan langkah-langkah untuk pemprosesan dan analisis data di dalam Google Sheets menggunakan Google Apps Script.
 
